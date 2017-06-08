@@ -36,6 +36,13 @@ namespace BasicUI.Controls
             return target.Children.FirstOrDefault(d => d.Id == id);
         }
 
+        /// <summary>
+        /// Locates a control with the given ID within the heirarchy
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="id">The id of the control to look for</param>
+        /// <returns>The located control</returns>
+        /// <remarks>Backed by a dictionary, or a recursive search if not found.</remarks>
         public T FindControlWithId<T>(string id) where T : Control
         {
             if (String.IsNullOrWhiteSpace(id)) throw new ArgumentOutOfRangeException("id", id, "Id must not be null or empty");

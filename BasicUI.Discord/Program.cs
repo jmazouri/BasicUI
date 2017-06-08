@@ -26,51 +26,19 @@ namespace BasicUI.DiscordClient
 
         async Task Start()
         {
-            w = new Window(windowTitle: "BasicDiscord");
-
-            w.RootContainer.Add(new Frame("serverList")
-            {
-                Title = "Servers",
-                Size = new Vector2(180, 150),
-                Position = new Vector2(0, 0),
-                Children =
+            w = DiscordWindow.Create
+            (
+                async (guild) =>
                 {
-                    new SelectableList<IGuild>("guilds", (guild) => guild.Name, async (guild) =>
-                    {
-                        _selectedGuild = guild.Id;
-                        await LoadGuildChannels();
-                    })
-                }
-            });
-
-            w.RootContainer.Add(new Frame("channelList")
-            {
-                Title = "Channels",
-                Size = new Vector2(180, 330),
-                Position = new Vector2(0, 150),
-                Children =
+                    _selectedGuild = guild.Id;
+                    await LoadGuildChannels();
+                },
+                async (channel) =>
                 {
-                    new SelectableList<IChannel>("channels", (channel) => channel.Name, async (channel) =>
-                    {
-                        _selectedChannel = channel.Id;
-                        await UpdateMessageList();
-                    })
+                    _selectedChannel = channel.Id;
+                    await UpdateMessageList();
                 }
-            });
-
-            w.RootContainer.Add(new Frame("messageList")
-            {
-                Title = "Messages",
-                Size = new Vector2(450, 480),
-                Position = new Vector2(190, 0),
-                Children =
-                {
-                    new WrapTextList<IMessage>("messages", (msg) => $"[{msg.Author.Username}] {msg.Content}")
-                    {
-                        ScrollToBottom = true
-                    }
-                }
-            });
+            );
 
             client = new DiscordSocketClient();
             await client.LoginAsync(TokenType.User, Config.Load().BotToken);

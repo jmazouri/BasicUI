@@ -60,7 +60,7 @@ namespace BasicUI.Example
             Console.WriteLine("Window Created! Push a key to stop.");
             Console.ReadLine();
 
-            w.EndRenderThread();
+            w.EndRendering();
         }
     }
 }

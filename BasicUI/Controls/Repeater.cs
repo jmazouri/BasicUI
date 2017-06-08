@@ -2,14 +2,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BasicUI.Controls
 {
     public abstract class Repeater<T> : Control, ICollection<T>
     {
-        protected List<T> Items { get; set; } = new List<T>();
+        private List<T> Items { get; set; } = new List<T>();
         public Func<T, string> Selector { get; set; }
+        public Color Color { get; set; } = Color.White;
 
         public bool ScrollToBottom { get; set; }
         private bool _scrollNextRender = false;
@@ -31,7 +33,12 @@ namespace BasicUI.Controls
 
         public override void Render()
         {
-            RenderItems();
+            ImGui.PushStyleColor(ColorTarget.Text, Color);
+
+            //Pass in a copy to help avoid concurrency issues
+            RenderItems(Items.ToList());
+
+            ImGui.PopStyleColor();
 
             if (_scrollNextRender && Items.Count > 0)
             {
@@ -40,25 +47,27 @@ namespace BasicUI.Controls
             }
         }
 
-        public abstract void RenderItems();
+        public abstract void RenderItems(IEnumerable<T> items);
 
         #region Interface Members
         public void Add(T item)
         {
-            Items.Add(item);
             if (ScrollToBottom)
             {
                 _scrollNextRender = true;
             }
+
+            Items.Add(item);
         }
 
         public void AddRange(IEnumerable<T> items)
         {
-            Items.AddRange(items);
             if (ScrollToBottom)
             {
                 _scrollNextRender = true;
             }
+
+            Items.AddRange(items);
         }
 
         public void Clear()

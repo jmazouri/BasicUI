@@ -52,11 +52,23 @@ namespace BasicUI
             Height = height;
         }
 
+        /// <summary>
+        /// Locates a control with the given ID within the heirarchy
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="id">The id of the control to look for</param>
+        /// <returns>The located control</returns>
+        /// <remarks>Backed by a dictionary, or a recursive search if not found.</remarks>
         public T FindControlWithId<T>(string id) where T : Control
         {
             return RootContainer.FindControlWithId<T>(id);
         }
 
+        /// <summary>
+        /// Get a control by its ID
+        /// </summary>
+        /// <param name="controlId">The ID of the control to return</param>
+        /// <returns>The control with the given ID</returns>
         public Control this[string controlId] => RootContainer.FindControlWithId<Control>(controlId);
 
         private unsafe void InitializeWindow()
@@ -80,6 +92,9 @@ namespace BasicUI
             WindowRenderer.CreateDeviceObjects(ref s_fontTexture);
         }
 
+        /// <summary>
+        /// Call this method to handle the rendering & processing loop yourself
+        /// </summary>
         public void RenderLoop()
         {
             if (_nativeWindow == null)
@@ -87,22 +102,6 @@ namespace BasicUI
                 InitializeWindow();
             }
 
-            WindowLoop();
-        }
-
-        public void StartRenderThread()
-        {
-            _renderThread = new Thread(RenderLoop);       
-            _renderThread.Start();
-        }
-
-        public void EndRenderThread()
-        {
-            _nativeWindow.Visible = false;
-        }
-
-        public void WindowLoop()
-        {
             _nativeWindow.Visible = true;
             while (_nativeWindow.Visible)
             {
@@ -111,6 +110,23 @@ namespace BasicUI
 
                 Thread.Sleep(16); //60fps
             }
+        }
+
+        /// <summary>
+        /// Begin rendering the window in a separate thread
+        /// </summary>
+        public void StartRenderThread()
+        {
+            _renderThread = new Thread(RenderLoop);       
+            _renderThread.Start();
+        }
+
+        /// <summary>
+        /// Hide the window, and stop the render thread if running
+        /// </summary>
+        public void EndRendering()
+        {
+            _nativeWindow.Visible = false;
         }
     }
 
