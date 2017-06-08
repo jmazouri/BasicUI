@@ -12,7 +12,12 @@ namespace BasicUI.DiscordClient
     {
         public static Window Create(Action<IGuild> guildSelected, Action<IChannel> channelSelected)
         {
-            Window w = new Window(windowTitle: "BasicDiscord");
+            Window w = new Window(windowTitle: "BasicDiscord")
+            {
+                FontPath = "Fonts/DroidSans.ttf"
+            };
+
+            
 
             w.RootContainer.Add(new Frame("serverList")
             {
@@ -43,7 +48,8 @@ namespace BasicUI.DiscordClient
                 Title = "Messages",
                 Size = new Vector2(450, 480),
                 Position = new Vector2(190, 0),
-                WindowFlags = WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar,
+                BackgroundAlpha = 0.66f,
+                WindowFlags = WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoCollapse | WindowFlags.NoSavedSettings,
                 Children =
                 {
                     new WrapTextList<IMessage>("messages", (msg) => $"[{msg.Author.Username}] {msg.Content}")

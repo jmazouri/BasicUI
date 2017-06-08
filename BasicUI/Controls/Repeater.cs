@@ -42,7 +42,7 @@ namespace BasicUI.Controls
 
             if (_scrollNextRender && Items.Count > 0)
             {
-                ImGui.SetScrollHere();
+                ImGui.SetScrollHere(1);
                 _scrollNextRender = false;
             }
         }
