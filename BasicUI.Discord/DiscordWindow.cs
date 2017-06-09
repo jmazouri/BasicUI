@@ -1,5 +1,6 @@
 ﻿using BasicUI.Controls;
 using Discord;
+using Discord.WebSocket;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,12 @@ namespace BasicUI.DiscordClient
 {
     public class DiscordWindow
     {
-        public static Window Create(Action<IGuild> guildSelected, Action<IChannel> channelSelected)
+        public static Window Create(Action<string> messageSubmit, Action<IGuild> guildSelected, Action<IChannel> channelSelected)
         {
             Window w = new Window(windowTitle: "BasicDiscord")
             {
                 FontPath = "Fonts/DroidSans.ttf"
             };
-
-            
 
             w.RootContainer.Add(new Frame("serverList")
             {
@@ -46,7 +45,7 @@ namespace BasicUI.DiscordClient
             w.RootContainer.Add(new Frame("messageList")
             {
                 Title = "Messages",
-                Size = new Vector2(450, 480),
+                Size = new Vector2(450, 440),
                 Position = new Vector2(190, 0),
                 BackgroundAlpha = 0.66f,
                 WindowFlags = WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoCollapse | WindowFlags.NoSavedSettings,
@@ -55,6 +54,23 @@ namespace BasicUI.DiscordClient
                     new WrapTextList<IMessage>("messages", (msg) => $"[{msg.Author.Username}] {msg.Content}")
                     {
                         ScrollToBottom = true
+                    }
+                }
+            });
+
+            w.RootContainer.Add(new Frame("inputBox")
+            {
+                Size = new Vector2(450, 20),
+                Position = new Vector2(190, 440),
+                BackgroundAlpha = 0.5f,
+                WindowFlags = WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoCollapse | WindowFlags.NoSavedSettings | WindowFlags.NoTitleBar,
+                Children =
+                {
+                    new TextBox
+                    {
+                        Label = "Message",
+                        InputTextFlags = InputTextFlags.EnterReturnsTrue,
+                        OnEdit = messageSubmit
                     }
                 }
             });

@@ -7,7 +7,7 @@ namespace BasicUI.Controls
 {
     public class Frame : Container
     {
-        public string Title { get; set; }
+        public string Title { get; set; } = String.Empty;
         public bool StartCentered { get; set; }
 
         private bool _opened;

@@ -26,6 +26,7 @@ namespace BasicUI.Example
                 Title = "Hey Dudes",
                 BackgroundAlpha = 0.75f,
                 Size = new Vector2(256, 300),
+                StartCentered = true,
                 Children =
                 {
                     new Button
@@ -51,16 +52,23 @@ namespace BasicUI.Example
                         Content = "Your IP Here",
                         Color = Color.Red
                     },
+                    new TextBox
+                    {
+                        InputTextFlags = ImGuiNET.InputTextFlags.EnterReturnsTrue,
+                        OnEdit = text => w.FindControlWithId<BulletedList<string>>("IPList").Add(text)
+                    },
                     new BulletedList<string>("IPList")
                 }
             });
 
-            w.StartRenderThread();
+            CancellationTokenSource src = new CancellationTokenSource();
+
+            w.StartRenderAsync(src);
 
             Console.WriteLine("Window Created! Push a key to stop.");
             Console.ReadLine();
 
-            w.EndRendering();
+            src.Cancel();
         }
     }
 }

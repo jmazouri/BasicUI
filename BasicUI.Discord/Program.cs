@@ -28,6 +28,10 @@ namespace BasicUI.DiscordClient
         {
             w = DiscordWindow.Create
             (
+                async (message) =>
+                {
+                    await (client.GetChannel(_selectedChannel) as ISocketMessageChannel).SendMessageAsync(message);
+                },
                 async (guild) =>
                 {
                     _selectedGuild = guild.Id;
@@ -59,9 +63,7 @@ namespace BasicUI.DiscordClient
                     .AddRange(client.Guilds);
             };
 
-            w.StartRenderThread();
-
-            await Task.Delay(-1);
+            await w.StartRenderAsync();
         }
 
         private async Task LoadGuildChannels()

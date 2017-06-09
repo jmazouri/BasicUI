@@ -11,7 +11,7 @@ namespace BasicUI.Native
     {
         private static float _wheelPosition;
 
-        public static void SetOpenTKKeyMappings()
+        public static void SetKeyMappings(NativeWindow nativeWindow)
         {
             IO io = ImGui.GetIO();
             io.KeyMap[GuiKey.Tab] = (int)Key.Tab;
@@ -33,6 +33,31 @@ namespace BasicUI.Native
             io.KeyMap[GuiKey.X] = (int)Key.X;
             io.KeyMap[GuiKey.Y] = (int)Key.Y;
             io.KeyMap[GuiKey.Z] = (int)Key.Z;
+
+            nativeWindow.KeyDown += (sender, e) =>
+            {
+                ImGui.GetIO().KeysDown[(int)e.Key] = true;
+                UpdateModifiers(e);
+            };
+
+            nativeWindow.KeyUp += (sender, e) =>
+            {
+                ImGui.GetIO().KeysDown[(int)e.Key] = false;
+                UpdateModifiers(e);
+            };
+
+            nativeWindow.KeyPress += (sender, e) =>
+            {
+                ImGui.AddInputCharacter(e.KeyChar);
+            };
+        }
+
+        private static unsafe void UpdateModifiers(KeyboardKeyEventArgs e)
+        {
+            IO io = ImGui.GetIO();
+            io.AltPressed = e.Alt;
+            io.CtrlPressed = e.Control;
+            io.ShiftPressed = e.Shift;
         }
 
         public static void UpdateImGuiInput(NativeWindow nativeWindow, IO io)

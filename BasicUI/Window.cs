@@ -87,7 +87,7 @@ namespace BasicUI
                 var font = ImGui.GetIO().FontAtlas.AddFontFromFileTTF(FontPath, FontSize);
             }
 
-            WindowIO.SetOpenTKKeyMappings();
+            WindowIO.SetKeyMappings(_nativeWindow);
 
             WindowRenderer.CreateDeviceObjects(ref s_fontTexture);
         }
@@ -95,7 +95,7 @@ namespace BasicUI
         /// <summary>
         /// Call this method to handle the rendering & processing loop yourself
         /// </summary>
-        public void RenderLoop()
+        public void RenderLoop(CancellationTokenSource cancel = null)
         {
             if (_nativeWindow == null)
             {
@@ -109,24 +109,20 @@ namespace BasicUI
                 _nativeWindow.ProcessEvents();
 
                 Thread.Sleep(16); //60fps
+
+                if ((cancel != null && cancel.IsCancellationRequested) || !_nativeWindow.Visible)
+                {
+                    return;
+                }
             }
         }
 
         /// <summary>
-        /// Begin rendering the window in a separate thread
+        /// Begin rendering the window in a Task
         /// </summary>
-        public void StartRenderThread()
+        public Task StartRenderAsync(CancellationTokenSource src = null)
         {
-            _renderThread = new Thread(RenderLoop);       
-            _renderThread.Start();
-        }
-
-        /// <summary>
-        /// Hide the window, and stop the render thread if running
-        /// </summary>
-        public void EndRendering()
-        {
-            _nativeWindow.Visible = false;
+            return Task.Run(() => RenderLoop(src));
         }
     }
 
