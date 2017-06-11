@@ -17,7 +17,6 @@ namespace BasicUI
 {
     public class Window
     {
-        private Thread _renderThread;
         private NativeWindow _nativeWindow;
         private GraphicsContext _graphicsContext;
         private int s_fontTexture;
@@ -25,8 +24,12 @@ namespace BasicUI
         public Container RootContainer { get; private set; } = new Container();
         public int Width { get; private set; }
         public int Height { get; private set; }
+
         public string FontPath { get; set; }
         public int FontSize { get; set; } = 14;
+
+        public bool ShowToolbar { get; set; } = true;
+        public Toolbar Toolbar { get; private set; }
 
         private string initialTitle = "BasicUI";
         public string WindowTitle
@@ -45,11 +48,15 @@ namespace BasicUI
             }
         }
 
+        public static float GlobalTime = 0;
+
         public Window(int width = 640, int height = 480, string windowTitle = "BasicUI")
         {
             initialTitle = windowTitle;
             Width = width;
             Height = height;
+
+            Toolbar = new Toolbar("mainToolbar");
         }
 
         /// <summary>
@@ -105,13 +112,15 @@ namespace BasicUI
             _nativeWindow.Visible = true;
             while (_nativeWindow.Visible)
             {
-                WindowRenderer.RenderFrame(_nativeWindow, _graphicsContext, RootContainer);
+                WindowRenderer.RenderFrame(_nativeWindow, _graphicsContext, this);
                 _nativeWindow.ProcessEvents();
 
                 Thread.Sleep(16); //60fps
+                GlobalTime++;
 
                 if ((cancel != null && cancel.IsCancellationRequested) || !_nativeWindow.Visible)
                 {
+                    GlobalTime = 0;
                     return;
                 }
             }

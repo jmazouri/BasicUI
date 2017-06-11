@@ -12,20 +12,20 @@ namespace BasicUI.Controls
 
         public Action<Button> OnClick { get; set; }
 
-        public override void Render()
+        protected override void InternalRender()
         {
             if (IsSmall)
             {
                 if (ImGui.SmallButton(Text))
                 {
-                    OnClick(this);
+                    OnClick?.Invoke(this);
                 }
             }
             else
             {
                 if (ImGui.Button(Text))
                 {
-                    OnClick(this);
+                    OnClick?.Invoke(this);
                 }
             }
         }

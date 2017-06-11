@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,7 @@ namespace BasicUI.Controls
 {
     public class TextBox : Control
     {
+        public float Width { get; set; }
         public string Label { get; set; } = "##data";
         public InputTextFlags InputTextFlags { get; set; }
 
@@ -19,13 +21,17 @@ namespace BasicUI.Controls
 
         private byte[] _textBuffer;
 
-        public override unsafe void Render()
+        protected override unsafe void InternalRender()
         {
+            ImGui.PushItemWidth(Width);
+
             if (ImGui.InputText(Label, _textBuffer, (uint)_textBuffer.Length, InputTextFlags, data => 0))
             {
                 Text = Encoding.UTF8.GetString(_textBuffer);
                 OnEdit(Text);
             }
+
+            ImGui.PopItemWidth();
         }
 
         /// <summary>

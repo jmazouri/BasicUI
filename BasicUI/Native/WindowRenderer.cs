@@ -123,13 +123,16 @@ namespace BasicUI.Native
                 for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
                 {
                     DrawCmd* pcmd = &(((DrawCmd*)cmd_list->CmdBuffer.Data)[cmd_i]);
+
                     if (pcmd->UserCallback != IntPtr.Zero)
                     {
                         throw new NotImplementedException();
                     }
                     else
                     {
-                        GL.BindTexture(TextureTarget.Texture2D, pcmd->TextureId.ToInt32());
+                        int texId = pcmd->TextureId.ToInt32();
+                        GL.BindTexture(TextureTarget.Texture2D, texId);
+
                         GL.Scissor(
                             (int)pcmd->ClipRect.X,
                             (int)(io.DisplaySize.Y - pcmd->ClipRect.W),
@@ -157,7 +160,7 @@ namespace BasicUI.Native
             graphicsContext.SwapBuffers();
         }
 
-        public static unsafe void RenderFrame(NativeWindow nativeWindow, GraphicsContext graphicsContext, Control rootControl)
+        public static unsafe void RenderFrame(NativeWindow nativeWindow, GraphicsContext graphicsContext, Window window)
         {
             IO io = ImGui.GetIO();
             io.DisplaySize = new System.Numerics.Vector2(nativeWindow.Width, nativeWindow.Height);
@@ -168,7 +171,12 @@ namespace BasicUI.Native
 
             ImGui.NewFrame();
 
-            rootControl.Render();
+            if (window.ShowToolbar)
+            {
+                window.Toolbar.Render();
+            }
+
+            window.RootContainer.Render();
 
             ImGui.Render();
 

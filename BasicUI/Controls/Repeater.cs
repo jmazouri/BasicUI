@@ -7,10 +7,13 @@ using System.Text;
 
 namespace BasicUI.Controls
 {
-    public abstract class Repeater<T> : Control, ICollection<T>
+    public class Repeater<T> : Control, ICollection<T>
     {
-        private List<T> Items { get; set; } = new List<T>();
+        public List<T> Items { get; set; } = new List<T>();
+
         public Func<T, string> Selector { get; set; }
+        public Action<T> Renderer { get; set; }
+
         public Color Color { get; set; } = Color.White;
 
         public bool ScrollToBottom { get; set; }
@@ -31,7 +34,7 @@ namespace BasicUI.Controls
             }
         }
 
-        public override void Render()
+        protected override void InternalRender()
         {
             ImGui.PushStyleColor(ColorTarget.Text, Color);
 
@@ -47,7 +50,13 @@ namespace BasicUI.Controls
             }
         }
 
-        public abstract void RenderItems(IEnumerable<T> items);
+        public virtual void RenderItems(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+            {
+                Renderer?.Invoke(item);
+            }
+        }
 
         #region Interface Members
         public void Add(T item)

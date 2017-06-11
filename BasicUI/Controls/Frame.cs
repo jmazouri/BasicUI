@@ -28,7 +28,7 @@ namespace BasicUI.Controls
             }
         }
 
-        public override void Render()
+        protected override void InternalRender()
         {
             ImGui.SetNextWindowPos(Position, SetCondition.Appearing);
             ImGui.SetNextWindowSize(Size, SetCondition.Appearing);
@@ -36,12 +36,11 @@ namespace BasicUI.Controls
             if (StartCentered)
             {
                 ImGui.SetNextWindowPosCenter(SetCondition.Appearing);
-                ImGui.SetNextWindowFocus();
             }
 
             ImGui.BeginWindow(Title, ref _opened, Size, BackgroundAlpha, WindowFlags);
 
-            base.Render();
+            base.InternalRender();
 
             ImGui.EndWindow();
         }

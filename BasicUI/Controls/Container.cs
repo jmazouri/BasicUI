@@ -14,7 +14,7 @@ namespace BasicUI.Controls
 
         private static Dictionary<string, Control> controlIdentifiers = new Dictionary<string, Control>();
 
-        public override void Render()
+        protected override void InternalRender()
         {
             foreach (var child in Children)
             {

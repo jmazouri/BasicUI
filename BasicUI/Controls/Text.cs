@@ -11,7 +11,7 @@ namespace BasicUI.Controls
         public string Content { get; set; }
         public Color Color { get; set; } = Color.White;
 
-        public override void Render()
+        protected override void InternalRender()
         {
             ImGui.Text(Content, Color);
         }

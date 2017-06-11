@@ -7,14 +7,9 @@ namespace BasicUI.Controls
 {
     public class BulletedList<T> : Repeater<T>
     {
-        public override void RenderItems(IEnumerable<T> items)
+        public BulletedList(string id = "", Func<T, string> selector = null) : base(id, selector)
         {
-            foreach (var item in items)
-            {
-                ImGui.BulletText(GetItemValue(item));
-            }
+            Renderer = item => ImGui.BulletText(GetItemValue(item));
         }
-
-        public BulletedList(string id = "", Func<T, string> selector = null) : base(id, selector) { }
     }
 }

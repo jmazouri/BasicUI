@@ -84,10 +84,10 @@ namespace BasicUI.DiscordClient
             var channels = guild.Channels;
             var list = w.FindControlWithId<Repeater<IMessage>>("messages");
 
-            list.Clear();
             w.FindControlWithId<Frame>("messageList").Title = $"{guild.Name} - {channels.First(d => d.Id == _selectedChannel).Name}";
-
             var messages = await (guild.GetChannel(_selectedChannel) as SocketTextChannel).GetMessagesAsync().Flatten();
+
+            list.Clear();
             list.AddRange(messages.Reverse());
         }
 
