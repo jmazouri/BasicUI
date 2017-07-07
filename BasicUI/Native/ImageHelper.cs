@@ -1,8 +1,6 @@
 ﻿using ImageSharp;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
 using ImageSharp.PixelFormats;
@@ -12,17 +10,23 @@ namespace BasicUI.Native
     public static class ImageHelper
     {
         static Dictionary<string, int> _textureIds = new Dictionary<string, int>();
+        public static IEnumerable<string> LoadedImages => _textureIds.Keys;
 
         /// <summary>
         /// Loads a texture, or returns the pointer to an existing texture
         /// </summary>
         /// <param name="image">The image to load</param>
         /// <returns>A pointer referring to the loaded OpenGL texture</returns>
-        public static IntPtr LoadImage(string textureName, Image<Argb32> image)
+        public static IntPtr LoadImage(string textureName, Image<Argb32> image = null)
         {
             if (_textureIds.ContainsKey(textureName))
             {
                 return new IntPtr(_textureIds[textureName]);
+            }
+
+            if (image == null)
+            {
+                throw new ArgumentNullException("image", "Image to load was null, and textureName was not found in cache.");
             }
 
             //Create a new texture ID

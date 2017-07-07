@@ -10,7 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="ImageSharp" Version="1.0.0-alpha9-00139" />
-    <PackageReference Include="ImGui.NET" Version="0.2.0" />
+    <PackageReference Include="ImGui.NET" Version="0.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="OpenTK.NETCore" Version="1.1.2571.6431" />
   </ItemGroup>
 

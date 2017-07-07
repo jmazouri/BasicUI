@@ -4,14 +4,12 @@ using BasicUI.Native;
 using ImGuiNET;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Reflection;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace BasicUI
 {
@@ -30,6 +28,13 @@ namespace BasicUI
 
         public bool ShowToolbar { get; set; } = true;
         public Toolbar Toolbar { get; private set; }
+
+        public static Dictionary<string, Control> ControlIdentifiers = new Dictionary<string, Control>();
+
+        /// <summary>
+        /// Runs after the window has been initialized, IO has been bound, and an OpenGL context has been created
+        /// </summary>
+        public Action<Window> Ready { get; set; }
 
         private string initialTitle = "BasicUI";
         public string WindowTitle
@@ -50,13 +55,16 @@ namespace BasicUI
 
         public static float GlobalTime = 0;
 
-        public Window(int width = 640, int height = 480, string windowTitle = "BasicUI")
+        public Window(int width = 640, int height = 480, string windowTitle = "BasicUI", INotifyPropertyChanged bindingContext = null)
         {
             initialTitle = windowTitle;
             Width = width;
             Height = height;
 
+            RootContainer.BindingContext = bindingContext;
+
             Toolbar = new Toolbar("mainToolbar");
+            Toolbar.BindingContext = bindingContext;
         }
 
         /// <summary>
@@ -97,6 +105,13 @@ namespace BasicUI
             WindowIO.SetKeyMappings(_nativeWindow);
 
             WindowRenderer.CreateDeviceObjects(ref s_fontTexture);
+
+            if (File.Exists("theme.json"))
+            {
+                ThemeLoader.LoadTheme(File.ReadAllText("theme.json"));
+            }
+
+            Ready?.Invoke(this);
         }
 
         /// <summary>
@@ -130,7 +145,7 @@ namespace BasicUI
         /// Begin rendering the window in a Task
         /// </summary>
         public Task StartRenderAsync(CancellationTokenSource src = null)
-        {
+        {   
             return Task.Run(() => RenderLoop(src));
         }
     }

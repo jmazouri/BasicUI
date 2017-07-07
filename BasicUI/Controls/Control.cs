@@ -1,13 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Numerics;
 
 namespace BasicUI.Controls
 {
     public abstract class Control
     {
-        public string Id { get; private set; }
+        public object BindingContext { get; set; }
+        public T GetBinding<T>() where T : class
+        {
+            return BindingContext as T;
+        }
+
+        /// <summary>
+        /// The unique identifier for the control. Some controls require this to be unique in order to render properly.
+        /// </summary>
+        public string Id { get; protected set; }
         public Vector2 Position { get; set; } = Vector2.Zero;
 
         public Action<Control> PreRender { get; set; }

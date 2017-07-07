@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace BasicUI
 {
@@ -30,7 +27,7 @@ namespace BasicUI
 
         public static implicit operator Vector4(Color c)
         {
-            return new Vector4(c.R, c.G, c.B, c.A);
+            return new Vector4(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
         }
 
         public static implicit operator OpenTK.Color(Color c)
@@ -43,5 +40,6 @@ namespace BasicUI
         public static Color Blue => new Color(0, 0, 255, 255);
         public static Color Black => new Color(0, 0, 0, 255);
         public static Color White => new Color(255, 255, 255, 255);
+        public static Color Transparent => new Color(0, 0, 0, 0);
     }
 }

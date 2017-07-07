@@ -66,14 +66,16 @@ namespace BasicUI.DiscordClient
                 WindowFlags = WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoCollapse | WindowFlags.NoSavedSettings | WindowFlags.NoTitleBar,
                 Children =
                 {
-                    new TextBox
+                    new TextBox("messageInput")
                     {
                         Label = "Message",
-                        InputTextFlags = InputTextFlags.EnterReturnsTrue,
-                        OnEdit = messageSubmit
+                        InputTextFlags = InputTextFlags.EnterReturnsTrue
                     }
                 }
             });
+
+            var inputBox = w.FindControlWithId<TextBox>("messageInput");
+            inputBox.PropertyChanged += (sender, text) => messageSubmit(inputBox.Text);
 
             return w;
         }

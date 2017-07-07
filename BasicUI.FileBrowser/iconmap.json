@@ -1,0 +1,6 @@
+﻿{
+    "doc": ["docx"],
+    "xls": ["xlsx"],
+    "html": ["htm", "xhtml"],
+    "xml": ["xaml"]
+}
