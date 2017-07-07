@@ -1,9 +1,6 @@
 ﻿using ImGuiNET;
 using OpenTK;
 using OpenTK.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BasicUI.Native
 {

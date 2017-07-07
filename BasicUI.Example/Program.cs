@@ -52,10 +52,11 @@ namespace BasicUI.Example
                         Content = "Your IP Here",
                         Color = Color.Red
                     },
-                    new TextBox
+                    new NumericInput("fakeNumber")
                     {
-                        InputTextFlags = ImGuiNET.InputTextFlags.EnterReturnsTrue,
-                        OnEdit = text => w.FindControlWithId<BulletedList<string>>("IPList").Add(text)
+                        Step = 1,
+                        FastStep = 5,
+                        Decimals = 2
                     },
                     new BulletedList<string>("IPList")
                 }

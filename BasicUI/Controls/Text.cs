@@ -1,8 +1,4 @@
 ﻿using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 
 namespace BasicUI.Controls
 {
@@ -13,6 +9,11 @@ namespace BasicUI.Controls
 
         protected override void InternalRender()
         {
+            if (Position.X != 0)
+            {
+                ImGuiNative.igSetCursorPosX(Position.X);
+            }
+
             ImGui.Text(Content, Color);
         }
 

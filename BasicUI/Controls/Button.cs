@@ -1,20 +1,29 @@
 ﻿using ImGuiNET;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Numerics;
 
 namespace BasicUI.Controls
 {
     public class Button : Control
     {
         public string Text { get; set; }
+        public Vector2 Size { get; set; }
+
         public bool IsSmall { get; set; }
+        public bool IsInvisible { get; set; }
 
         public Action<Button> OnClick { get; set; }
 
         protected override void InternalRender()
         {
-            if (IsSmall)
+            if (IsInvisible)
+            {
+                if (ImGui.InvisibleButton(Id, Size))
+                {
+                    OnClick?.Invoke(this);
+                }
+            }
+            else if (IsSmall)
             {
                 if (ImGui.SmallButton(Text))
                 {
@@ -23,7 +32,7 @@ namespace BasicUI.Controls
             }
             else
             {
-                if (ImGui.Button(Text))
+                if (ImGui.Button(Text, Size))
                 {
                     OnClick?.Invoke(this);
                 }

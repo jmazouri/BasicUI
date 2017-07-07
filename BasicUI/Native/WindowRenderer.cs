@@ -1,11 +1,8 @@
-﻿using BasicUI.Controls;
-using ImGuiNET;
+﻿using ImGuiNET;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BasicUI.Native
 {

@@ -1,0 +1,42 @@
+﻿{
+    "Variables": 
+    {
+        "Parchment": [252, 255, 245],
+        "DarkParchment": [209, 219, 189],
+        "Sea": [145, 170, 157],
+        "LightTeal": [62, 96, 111],
+        "DarkBlue": [25, 52, 65]
+    },
+    "Colors":
+    {
+        "Text": "Parchment",
+        "WindowBg": "Parchment",
+
+        "TitleBgCollapsed": "DarkParchment",
+
+        "Button": "Sea",
+        "FrameBg": "Sea",
+        "ScrollbarGrab": "Sea",
+
+        "ScrollbarGrabHovered": "LightTeal",
+        "ScrollbarGrabActive": "LightTeal",
+        "TitleBgActive": "LightTeal",
+        "ButtonHovered": "LightTeal",
+        "ButtonActive": "LightTeal",
+        "HeaderHovered": "LightTeal",
+        "HeaderActive": "LightTeal",
+        "CloseButtonHovered": "LightTeal",
+        "FrameBgHovered": "LightTeal",
+        "FrameBgActive": "LightTeal",
+        "TextSelectedBg": "LightTeal",
+
+        "TitleBg": "DarkBlue",
+        "MenuBarBg": "DarkBlue",
+        "CloseButton": "DarkBlue",
+        "ScrollbarBg": "DarkBlue"
+    },
+    "Styles":
+    {
+        "WindowRounding": 0
+    }
+}
