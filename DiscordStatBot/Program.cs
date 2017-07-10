@@ -54,7 +54,7 @@ namespace DiscordStatBot
             );
 
             await client.StartAsync();
-            await client.LoginAsync(TokenType.User, "***REMOVED***");
+            await client.LoginAsync(TokenType.User, "");
 
             await _window.StartRenderAsync();
             //await Task.Delay(-1);
