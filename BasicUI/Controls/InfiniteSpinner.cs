@@ -1,29 +1,28 @@
 ﻿using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace BasicUI.Controls
 {
-    public class InfiniteSpinner : Control
+    public class InfiniteSpinner : ProgressBar
     {
         public bool Enabled { get; set; }
-        public int Width { get; set; } = 24;
 
-        private int _ind;
-        private int LoopingIndex
+        private float LoopingIndex
         {
             get
             {
-                return _ind;
+                return Progress;
             }
             set
             {
-                _ind = value;
+                Progress = value;
 
-                if (_ind >= Width)
+                if (Progress >= 1)
                 {
-                    _ind = 0;
+                    Progress = 0;
                 }
             }
         }
@@ -32,23 +31,8 @@ namespace BasicUI.Controls
         {
             if (Enabled)
             {
-                StringBuilder build = new StringBuilder();
-
-                for (int i = 0; i < Width; i++)
-                {
-                    if (i == LoopingIndex)
-                    {
-                        build.Append('-');
-                    }
-                    else
-                    {
-                        build.Append('_');
-                    }
-                }
-
-                ImGui.Text(build.ToString());
-
-                LoopingIndex++;
+                LoopingIndex += 0.05f;
+                base.InternalRender();
             }
         }
 

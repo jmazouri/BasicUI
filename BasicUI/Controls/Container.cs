@@ -13,7 +13,7 @@ namespace BasicUI.Controls
 
         protected override void InternalRender()
         {
-            foreach (var child in Children)
+            foreach (var child in Children.ToList())
             {
                 child.Render();
             }

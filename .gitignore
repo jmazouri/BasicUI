@@ -288,3 +288,4 @@ __pycache__/
 *.xsd.cs
 BasicUI.Discord/config.json
 *.ini
+DiscordStatBot/config.json
