@@ -15,7 +15,6 @@ namespace DiscordStatBot
         private DiscordSocketClient _client;
 
         public Dictionary<ulong, List<float>> MessageHistories { get; set; } = new Dictionary<ulong, List<float>>();
-
         private Dictionary<ulong, float> _lastSecondHistories { get; set; } = new Dictionary<ulong, float>();
 
         private Timer t;
