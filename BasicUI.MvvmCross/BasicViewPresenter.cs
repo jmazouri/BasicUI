@@ -5,7 +5,7 @@ using BasicUI.Controls;
 
 namespace BasicUI.MvvmCross
 {
-    public class BasicViewPresenter : IMvxViewPresenter
+    public class BasicViewPresenter : MvxViewPresenter
     {
         private Window _window;
 
@@ -14,22 +14,17 @@ namespace BasicUI.MvvmCross
             _window = window;
         }
 
-        public void AddPresentationHintHandler<THint>(Func<THint, bool> action) where THint : MvxPresentationHint
+        public override void ChangePresentation(MvxPresentationHint hint)
         {
             throw new NotImplementedException();
         }
 
-        public void ChangePresentation(MvxPresentationHint hint)
+        public override void Close(IMvxViewModel toClose)
         {
             throw new NotImplementedException();
         }
 
-        public void Close(IMvxViewModel toClose)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Show(MvxViewModelRequest request)
+        public override void Show(MvxViewModelRequest request)
         {
             if (request is MvxViewModelInstanceRequest instanceRequest)
             {

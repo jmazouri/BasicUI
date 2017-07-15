@@ -25,18 +25,29 @@ namespace BasicUI.MvvmCross.Example
 
         public App()
         {
-            _window = new Window();
-
+            base.Initialize();
             MvxSimpleIoCContainer.Initialize();
 
+            _window = new Window();
+            var presenter = new BasicViewPresenter(_window);
+            var start = new ExampleAppStart();
+
+            Mvx.RegisterSingleton(_window);
             Mvx.RegisterType<ICalculation, Calculation>();
-            Mvx.RegisterSingleton<IMvxViewPresenter>(new BasicViewPresenter(_window));
-            RegisterAppStart(new ExampleAppStart());
+            Mvx.RegisterSingleton<IMvxViewPresenter>(presenter);
+            RegisterAppStart(start);
+
+            start.Start();
+            
+
+            //CreatableTypes().EndingWith("Service").AsInterfaces().RegisterAsLazySingleton();
         }
+
+        
 
         public async Task Run()
         {
-            //Initialize();
+            //Mvx.Resolve<IMvxAppStart>().Start();
             await Mvx.Resolve<Window>().StartRenderAsync();
 
             await Task.Delay(-1);
