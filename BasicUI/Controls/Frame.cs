@@ -28,8 +28,8 @@ namespace BasicUI.Controls
 
         protected override void InternalRender()
         {
-            ImGui.SetNextWindowPos(Position, SetCondition.Appearing);
-            ImGui.SetNextWindowSize(Size, SetCondition.Appearing);
+            ImGui.SetNextWindowPos(Position, SetCondition.FirstUseEver);
+            ImGui.SetNextWindowSize(Size, SetCondition.FirstUseEver);
 
             if (StartCentered)
             {

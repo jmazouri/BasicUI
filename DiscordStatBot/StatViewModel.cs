@@ -12,21 +12,21 @@ namespace DiscordStatBot
 {
     public class StatViewModel : INotifyPropertyChanged
     {
-        private DiscordSocketClient _client;
+        public DiscordSocketClient Client { get; private set; }
 
+        public Dictionary<string, int> WordCounts { get; private set; } = new Dictionary<string, int>();
         public Dictionary<ulong, List<float>> MessageHistories { get; set; } = new Dictionary<ulong, List<float>>();
-
         private Dictionary<ulong, float> _lastSecondHistories { get; set; } = new Dictionary<ulong, float>();
 
         private Timer t;
 
         public StatViewModel(DiscordSocketClient client)
         {
-            _client = client;
+            Client = client;
 
-            _client.Ready += () => OnPropertyChanged(nameof(Servers));
-            _client.GuildUpdated += (guild, guild2) => OnPropertyChanged(nameof(Servers));
-            _client.GuildAvailable += guild => OnPropertyChanged(nameof(Servers));
+            Client.Ready += () => OnPropertyChanged(nameof(Servers));
+            Client.GuildUpdated += (guild, guild2) => OnPropertyChanged(nameof(Servers));
+            Client.GuildAvailable += guild => OnPropertyChanged(nameof(Servers));
 
             PropertyChanged += (sender, args) =>
             {
@@ -67,17 +67,34 @@ namespace DiscordStatBot
                 OnPropertyChanged(nameof(MessageHistories));
             }, null, 0, 1000);
 
-            _client.MessageReceived += msg =>
+            Client.MessageReceived += msg =>
             {
-                ulong guildid = (msg.Channel as SocketGuildChannel).Guild.Id;
+                var words = msg.Content
+                    .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(d=>d.Trim().ToLower());
 
+                foreach (var word in words)
+                {
+                    if (!WordCounts.ContainsKey(word))
+                    {
+                        WordCounts.Add(word, 1);
+                    }
+                    else
+                    {
+                        WordCounts[word] = WordCounts[word] + 1;
+                    }
+
+                    OnPropertyChanged(nameof(WordCounts));
+                }
+
+                ulong guildid = (msg.Channel as SocketGuildChannel).Guild.Id;
                 _lastSecondHistories[guildid] = _lastSecondHistories[guildid] + 1;
 
                 return Task.CompletedTask;
             };
         }
 
-        public IEnumerable<IGuild> Servers => _client.Guilds;
+        public IEnumerable<IGuild> Servers => Client.Guilds;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected Task OnPropertyChanged(string name)

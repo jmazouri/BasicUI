@@ -1,17 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicUI", "BasicUI\BasicUI.csproj", "{924B3068-4998-40B0-85F5-B15407F5FB03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicUI.Example", "BasicUI.Example\BasicUI.Example.csproj", "{B470F7FB-2FD6-4942-9F4E-2CDC0CE29681}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicUI.DiscordClient", "BasicUI.Discord\BasicUI.DiscordClient.csproj", "{8AF52324-7DA2-491A-A280-53422D09A397}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicUI.FileBrowser", "BasicUI.FileBrowser\BasicUI.FileBrowser.csproj", "{4B109A24-6BEB-4214-81B6-9B63CD1DC366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordStatBot", "DiscordStatBot\DiscordStatBot.csproj", "{BCF38D86-1AFA-49C1-B9C6-48A2D5D0262E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordStatBot", "DiscordStatBot\DiscordStatBot.csproj", "{BCF38D86-1AFA-49C1-B9C6-48A2D5D0262E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +25,6 @@ Global
 		{B470F7FB-2FD6-4942-9F4E-2CDC0CE29681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B470F7FB-2FD6-4942-9F4E-2CDC0CE29681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B470F7FB-2FD6-4942-9F4E-2CDC0CE29681}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AF52324-7DA2-491A-A280-53422D09A397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AF52324-7DA2-491A-A280-53422D09A397}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AF52324-7DA2-491A-A280-53422D09A397}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AF52324-7DA2-491A-A280-53422D09A397}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B109A24-6BEB-4214-81B6-9B63CD1DC366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B109A24-6BEB-4214-81B6-9B63CD1DC366}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B109A24-6BEB-4214-81B6-9B63CD1DC366}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -9,6 +9,7 @@ namespace BasicUI.Controls
     public class InfiniteSpinner : ProgressBar
     {
         public bool Enabled { get; set; }
+        public float Speed { get; set; } = 0.05f;
 
         private float LoopingIndex
         {
@@ -31,7 +32,7 @@ namespace BasicUI.Controls
         {
             if (Enabled)
             {
-                LoopingIndex += 0.05f;
+                LoopingIndex += Speed;
                 base.InternalRender();
             }
         }
