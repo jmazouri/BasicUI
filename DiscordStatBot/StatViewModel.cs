@@ -14,7 +14,7 @@ namespace DiscordStatBot
     {
         public DiscordSocketClient Client { get; private set; }
 
-        public Dictionary<string, int> WordCounts { get; private set; } = new Dictionary<string, int>();
+        public Dictionary<ulong, Dictionary<string, int>> WordCounts { get; private set; } = new Dictionary<ulong, Dictionary<string, int>>();
         public Dictionary<ulong, List<float>> MessageHistories { get; set; } = new Dictionary<ulong, List<float>>();
         private Dictionary<ulong, float> _lastSecondHistories { get; set; } = new Dictionary<ulong, float>();
 
@@ -69,25 +69,36 @@ namespace DiscordStatBot
 
             Client.MessageReceived += msg =>
             {
+                var channel = (msg.Channel as SocketGuildChannel);
+
+                if (channel == null) { return Task.CompletedTask; }
+
                 var words = msg.Content
                     .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(d=>d.Trim().ToLower());
 
                 foreach (var word in words)
                 {
-                    if (!WordCounts.ContainsKey(word))
+                    if (!WordCounts.ContainsKey(channel.Guild.Id))
                     {
-                        WordCounts.Add(word, 1);
+                        WordCounts[channel.Guild.Id] = new Dictionary<string, int>();
+                    }
+
+                    var serverCounts = WordCounts[channel.Guild.Id];
+
+                    if (!serverCounts.ContainsKey(word))
+                    {
+                        serverCounts.Add(word, 1);
                     }
                     else
                     {
-                        WordCounts[word] = WordCounts[word] + 1;
+                        serverCounts[word] = serverCounts[word] + 1;
                     }
 
                     OnPropertyChanged(nameof(WordCounts));
                 }
 
-                ulong guildid = (msg.Channel as SocketGuildChannel).Guild.Id;
+                ulong guildid = channel.Guild.Id;
                 _lastSecondHistories[guildid] = _lastSecondHistories[guildid] + 1;
 
                 return Task.CompletedTask;

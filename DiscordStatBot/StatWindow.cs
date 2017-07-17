@@ -64,7 +64,7 @@ namespace DiscordStatBot
                 window.FindControlWithId<Container>("wordCounts"),
                 (vm, container) =>
                 {
-                    foreach (var word in vm.WordCounts.OrderByDescending(d => d.Value).Take(25))
+                    foreach (var word in vm.WordCounts.SelectMany(d=>d.Value).OrderByDescending(d => d.Value).Take(25))
                     {
                         ImGui.Text($"{word.Key} - {word.Value}");
                     }
@@ -75,14 +75,11 @@ namespace DiscordStatBot
             (
                 vm => vm.MessageHistories,
                 window.FindControlWithId<BarPlot>("messagePlot"),
-                (vm, plot) =>
-                    plot.Points =
-                    (
-                        vm.MessageHistories.Count == 0
-                            ? new List<float>()
-                            : Enumerable.Range(0, vm.MessageHistories.First().Value.Count)
-                                  .Select(i => vm.MessageHistories.Select(kv => vm.MessageHistories[kv.Key][i]).Sum())
-                    )
+                (vm, plot) => plot.Points =       
+                    vm.MessageHistories.Count == 0
+                        ? new List<float>()
+                        : Enumerable.Range(0, vm.MessageHistories.First().Value.Count)
+                                .Select(i => vm.MessageHistories.Select(kv => vm.MessageHistories[kv.Key][i]).Sum())
             );
 
             binder.BindPreRender
