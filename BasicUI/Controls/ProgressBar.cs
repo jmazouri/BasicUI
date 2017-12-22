@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BasicUI.Controls
 {
-    public class ProgressBar : Control
+    public class ProgressBar : ControlBase
     {
         public float Progress { get; set; }
         public string Overlay { get; set; }

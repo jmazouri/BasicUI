@@ -60,15 +60,14 @@ namespace BasicUI.Native
             display_w = nativeWindow.Width;
             display_h = nativeWindow.Height;
 
-            Vector4 clear_color = new Vector4(114f / 255f, 144f / 255f, 154f / 255f, 1.0f);
+            Vector4 clear_color = new Vector4(100f / 255f, 149f / 255f, 237f / 255f, 1.0f);
             GL.Viewport(0, 0, display_w, display_h);
             GL.ClearColor(clear_color.X, clear_color.Y, clear_color.Z, clear_color.W);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             // We are using the OpenGL fixed pipeline to make the example code simpler to read!
             // Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, vertex/texcoord/color pointers.
-            int last_texture;
-            GL.GetInteger(GetPName.TextureBinding2D, out last_texture);
+            GL.GetInteger(GetPName.TextureBinding2D, out int last_texture);
             GL.PushAttrib(AttribMask.EnableBit | AttribMask.ColorBufferBit | AttribMask.TransformBit);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
@@ -90,13 +89,15 @@ namespace BasicUI.Native
             GL.MatrixMode(MatrixMode.Projection);
             GL.PushMatrix();
             GL.LoadIdentity();
-            GL.Ortho(
+            GL.Ortho
+            (
                 0.0f,
                 io.DisplaySize.X / io.DisplayFramebufferScale.X,
                 io.DisplaySize.Y / io.DisplayFramebufferScale.Y,
                 0.0f,
                 -1.0f,
-                1.0f);
+                1.0f
+            );
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             GL.LoadIdentity();
@@ -130,11 +131,13 @@ namespace BasicUI.Native
                         int texId = pcmd->TextureId.ToInt32();
                         GL.BindTexture(TextureTarget.Texture2D, texId);
 
-                        GL.Scissor(
+                        GL.Scissor
+                        (
                             (int)pcmd->ClipRect.X,
                             (int)(io.DisplaySize.Y - pcmd->ClipRect.W),
                             (int)(pcmd->ClipRect.Z - pcmd->ClipRect.X),
-                            (int)(pcmd->ClipRect.W - pcmd->ClipRect.Y));
+                            (int)(pcmd->ClipRect.W - pcmd->ClipRect.Y)
+                        );
                         ushort[] indices = new ushort[pcmd->ElemCount];
                         for (int i = 0; i < indices.Length; i++) { indices[i] = idx_buffer[i]; }
                         GL.DrawElements(PrimitiveType.Triangles, (int)pcmd->ElemCount, DrawElementsType.UnsignedShort, new IntPtr(idx_buffer));

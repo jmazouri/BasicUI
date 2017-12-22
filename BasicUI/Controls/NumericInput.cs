@@ -1,14 +1,18 @@
 ﻿using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace BasicUI.Controls
 {
-    public class NumericInput : Control
+    public class NumericInput : EditableControl, INotifyPropertyChanged
     {
         private float _value;
-        public float Value
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public float SelectedValue
         {
             get => _value;
             set => _value = value;
@@ -22,11 +26,16 @@ namespace BasicUI.Controls
 
         public InputTextFlags InputTextFlags { get; set; }
 
+        public override string Value => SelectedValue.ToString();
+
         protected unsafe override void InternalRender()
         {
-            fixed (float* ptr_value = &_value)
+            float oldValue = _value;
+            ImGuiExtra.InputFloat(Label, ref _value, Step, FastStep, Decimals, InputTextFlags);
+            
+            if (_value != oldValue)
             {
-                ImGuiNative.igInputFloat(Label, ptr_value, Step, FastStep, Decimals, InputTextFlags);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedValue)));
             }
         }
 

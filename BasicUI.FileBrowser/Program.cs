@@ -2,6 +2,8 @@
 using System;
 using System.Threading;
 using System.IO;
+using System.Collections.Generic;
+using OpenTK.Input;
 
 namespace BasicUI.FileBrowser
 {
@@ -22,8 +24,9 @@ namespace BasicUI.FileBrowser
                 driveMenu.Add(new MenuItem(path, menu => menu.GetBinding<BrowserViewModel>().CurrentDirectory = path));
             }
 
-            Window w = new Window(1280, 720, "Basic Browser", viewModel)
+            Window w = new Window(1280, 720, "Basic Browser")
             {
+                BindingContext = viewModel,
                 FontPath = "Fonts/Roboto-Regular.ttf",
                 FontSize = 16,
                 Toolbar =
@@ -39,12 +42,7 @@ namespace BasicUI.FileBrowser
                     },
                     new MenuItem("View")
                     {
-                        new MenuItem("Sort")
-                        {
-                            new MenuItem("Name", _ => viewModel.Sorting = Sorting.Name),
-                            new MenuItem("Size", _ => viewModel.Sorting = Sorting.Size),
-                            new MenuItem("Date Modified", _ => viewModel.Sorting = Sorting.Modified)
-                        },
+                        new EnumMenuItem<Sorting>("Sort", sort => viewModel.Sorting = sort),
                         new MenuItem("Animate Labels", _ => viewModel.AnimateLabels = !viewModel.AnimateLabels)
                     }
                 }
@@ -64,6 +62,8 @@ namespace BasicUI.FileBrowser
                 {
                     viewModel.CurrentDirectory = Environment.GetEnvironmentVariable("HOME");
                 }
+
+                window.HotkeyManager.Register(() => window.FindControlWithId<TextBox>("pathBox").Focus(), KeyModifiers.Control, Key.F);
             };
 
             BrowserWindow.Setup(w);

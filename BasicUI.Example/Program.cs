@@ -6,6 +6,9 @@ using BasicUI.Controls;
 using System.Text;
 using System.Numerics;
 using System.Net.Http;
+using BasicUI.Native;
+using ImageSharp;
+using ImageSharp.PixelFormats;
 
 namespace BasicUI.Example
 {
@@ -17,7 +20,7 @@ namespace BasicUI.Example
 
             Window w = new Window
             {
-                FontPath = "Fonts/DroidSans.ttf",
+                //FontPath = "segoeui.ttf",
                 WindowTitle = "BasicUI.Example"
             };
 
@@ -31,7 +34,7 @@ namespace BasicUI.Example
                 {
                     new Button
                     {
-                        Text = "Click Me!",
+                        Text = "♨ what up",
                         OnClick = async (btn) =>
                         {
                             Text label = w["Status"] as Text;
@@ -58,7 +61,11 @@ namespace BasicUI.Example
                         FastStep = 5,
                         Decimals = 2
                     },
-                    new BulletedList<string>("IPList")
+                    new BulletedList<string>("IPList"),
+                    new ImageBox()
+                    {
+                        Image = Image.Load<Argb32>("Images/test.jpg") 
+                    }
                 }
             });
 

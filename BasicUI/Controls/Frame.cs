@@ -28,12 +28,12 @@ namespace BasicUI.Controls
 
         protected override void InternalRender()
         {
-            ImGui.SetNextWindowPos(Position, SetCondition.FirstUseEver);
-            ImGui.SetNextWindowSize(Size, SetCondition.FirstUseEver);
+            ImGui.SetNextWindowPos(Position, Condition.FirstUseEver);
+            ImGui.SetNextWindowSize(Size, Condition.FirstUseEver);
 
             if (StartCentered)
             {
-                ImGui.SetNextWindowPosCenter(SetCondition.Appearing);
+                ImGui.SetNextWindowPosCenter(Condition.Appearing);
             }
 
             ImGui.BeginWindow(Title, ref _opened, Size, BackgroundAlpha, WindowFlags);

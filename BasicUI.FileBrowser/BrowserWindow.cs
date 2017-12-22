@@ -56,22 +56,22 @@ namespace BasicUI.FileBrowser
             binder.BindSpecificPropChanged
             (
                 vm => vm.Sorting,
-                w.FindControlWithId<MenuItem>("Name"),
-                (vm, item) => item.Selected = vm.Sorting == Sorting.Name
-            );
-
-            binder.BindSpecificPropChanged
-            (
-                vm => vm.Sorting,
-                w.FindControlWithId<MenuItem>("Size"),
-                (vm, item) => item.Selected = vm.Sorting == Sorting.Size
-            );
-
-            binder.BindSpecificPropChanged
-            (
-                vm => vm.Sorting,
-                w.FindControlWithId<MenuItem>("Date Modified"),
-                (vm, item) => item.Selected = vm.Sorting == Sorting.Modified
+                w.FindControlWithId<MenuItem>("Sort"),
+                (vm, item) =>
+                {
+                    var opts = item.AsEnumerable();
+                    foreach (var opt in opts)
+                    {
+                        if (opt.Label == vm.Sorting.ToString())
+                        {
+                            opt.Selected = true;
+                        }
+                        else
+                        {
+                            opt.Selected = false;
+                        }
+                    }
+                }
             );
 
             binder.BindSpecificPropChanged

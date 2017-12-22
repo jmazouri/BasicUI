@@ -14,17 +14,17 @@ namespace BasicUI
             _viewModel = viewModel;
         }
 
-        public void BindPreRender<T>(T targetControl, Action<TViewModel, T> setter) where T : Control
+        public void BindPreRender<T>(T targetControl, Action<TViewModel, T> setter) where T : ControlBase
         {
             targetControl.PreRender += c => setter.Invoke(_viewModel, targetControl);
         }
 
-        public void BindPropChanged<T>(T targetControl, Action<TViewModel, T> setter) where T : Control
+        public void BindPropChanged<T>(T targetControl, Action<TViewModel, T> setter) where T : ControlBase
         {
             _viewModel.PropertyChanged += (sender, args) => setter.Invoke(_viewModel, targetControl);
         }
 
-        public void BindSpecificPropChanged<T>(Expression<Func<TViewModel, object>> prop, T targetControl, Action<TViewModel, T> setter) where T : Control
+        public void BindSpecificPropChanged<T>(Expression<Func<TViewModel, object>> prop, T targetControl, Action<TViewModel, T> setter) where T : ControlBase
         {
             if (prop.Body is MemberExpression mExp)
             {
@@ -37,7 +37,7 @@ namespace BasicUI
             }
         }
 
-        public void BindSpecificPropChanged<T>(string propName, T targetControl, Action<TViewModel, T> setter) where T : Control
+        public void BindSpecificPropChanged<T>(string propName, T targetControl, Action<TViewModel, T> setter) where T : ControlBase
         {
             _viewModel.PropertyChanged += (sender, args) =>
             {

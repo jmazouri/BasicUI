@@ -22,7 +22,7 @@ namespace BasicUI.Controls
             if (IsOpen)
             {
                 ImGui.OpenPopup(Id);
-                ImGui.SetNextWindowPosCenter(SetCondition.Appearing);
+                ImGui.SetNextWindowPosCenter(Condition.Appearing);
             }
 
             if (ImGui.BeginPopupModal(Id, WindowFlags.AlwaysAutoResize))

@@ -4,9 +4,9 @@ using System.Collections;
 
 namespace BasicUI.Controls
 {
-    public class Toolbar : Control, IEnumerable<MenuItem>
+    public class Toolbar : ControlBase, IEnumerable<IMenuItem>
     {
-        private ControlCollection<MenuItem> Items { get; set; }
+        private ControlCollection<IMenuItem> Items { get; set; }
 
         protected override void InternalRender()
         {
@@ -23,14 +23,15 @@ namespace BasicUI.Controls
             }
         }
 
-        public void Add(MenuItem item) => Items.Add(item);
-        public void AddRange(MenuItem item) => Items.AddRange(item);
-        public IEnumerator<MenuItem> GetEnumerator() => Items.GetEnumerator();
+        public void Add(IMenuItem item) => Items.Add(item);
+        public void AddRange(IEnumerable<IMenuItem> items) => Items.AddRange(items);
+        
+        public IEnumerator<IMenuItem> GetEnumerator() => Items.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => Items.GetEnumerator();
 
         internal Toolbar(string id = "") : base(id)
         {
-            Items = new ControlCollection<MenuItem>(this);
+            Items = new ControlCollection<IMenuItem>(this);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BasicUI.Controls
 {
-    public abstract class Plot : Control
+    public abstract class Plot : ControlBase
     {
         public IEnumerable<float> Points { get; set; } = new List<float>();
 

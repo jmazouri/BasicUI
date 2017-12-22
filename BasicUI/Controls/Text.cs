@@ -2,7 +2,7 @@
 
 namespace BasicUI.Controls
 {
-    public class Text : Control
+    public class Text : ControlBase
     {
         public string Content { get; set; }
         public Color Color { get; set; } = Color.White;

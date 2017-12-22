@@ -14,7 +14,8 @@ namespace BasicUI.FileBrowser
         Default,
         Name,
         Size,
-        Modified
+        Modified,
+        Type
     }
 
     public class BrowserViewModel : INotifyPropertyChanged
@@ -43,7 +44,7 @@ namespace BasicUI.FileBrowser
             }
         }
 
-        private string _currentDirectory = @"C:\";
+        private string _currentDirectory = "";
         public string CurrentDirectory
         {
             get => _currentDirectory;
@@ -107,6 +108,9 @@ namespace BasicUI.FileBrowser
                         break;
                     case Sorting.Modified:
                         sortedFiles = sortedFiles.OrderBy(d => new FileInfo(d).LastWriteTime);
+                        break;
+                    case Sorting.Type:
+                        sortedFiles = sortedFiles.OrderBy(d => Path.GetExtension(d));
                         break;
                 }
             }

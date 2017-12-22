@@ -1,16 +1,23 @@
 ﻿using ImGuiNET;
 using System.ComponentModel;
 using System.Text;
+using System;
 
 namespace BasicUI.Controls
 {
-    public class TextBox : Control, INotifyPropertyChanged
+    public class TextBox : EditableControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public float Width { get; set; }
         public string Label { get; set; } = "##data";
         public InputTextFlags InputTextFlags { get; set; }
+
+        private bool _focus;
+        public void Focus()
+        {
+            _focus = true;
+        }
 
         public string Text
         {
@@ -33,11 +40,20 @@ namespace BasicUI.Controls
             }
         }
 
+        public override string Value => Text;
+
         private byte[] _textBuffer;
 
         protected override unsafe void InternalRender()
         {
             ImGui.PushItemWidth(Width);
+
+            if (_focus)
+            {
+                ImGui.SetKeyboardFocusHere();
+
+                _focus = false;
+            }
 
             if (ImGui.InputText(Label, _textBuffer, (uint)_textBuffer.Length, InputTextFlags, data => 0))
             {

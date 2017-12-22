@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace BasicUI.Controls
 {
-    public class MenuItem : Control, IEnumerable<MenuItem>
+    public class MenuItem : ControlBase, IMenuItem, IEnumerable<IMenuItem>
     {
-        private ControlCollection<MenuItem> Items { get; set; }
+        protected ControlCollection<IMenuItem> Items { get; set; }
 
         public string Label { get; set; }
         public bool Enabled { get; set; } = true;
@@ -22,7 +22,7 @@ namespace BasicUI.Controls
             {
                 if (ImGui.BeginMenu(Label, Enabled))
                 {
-                    foreach (MenuItem item in Items)
+                    foreach (IMenuItem item in Items)
                     {
                         item.Render();
                     }
@@ -39,8 +39,8 @@ namespace BasicUI.Controls
             }
         }
 
-        public void Add(MenuItem item) => Items.Add(item);
-        public IEnumerator<MenuItem> GetEnumerator() => Items.GetEnumerator();
+        public void Add(IMenuItem item) => Items.Add(item);
+        public IEnumerator<IMenuItem> GetEnumerator() => Items.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => Items.GetEnumerator();
 
         public MenuItem(string label, Action<MenuItem> onClick = null) : base(label)
@@ -48,13 +48,13 @@ namespace BasicUI.Controls
             Label = label;
             OnClick = onClick;
 
-            Items = new ControlCollection<MenuItem>(this);
+            Items = new ControlCollection<IMenuItem>(this);
         }
 
         public MenuItem(string label, string id) : base(id)
         {
             Label = label;
-            Items = new ControlCollection<MenuItem>(this);
+            Items = new ControlCollection<IMenuItem>(this);
         }
     }
 }

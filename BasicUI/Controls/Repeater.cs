@@ -6,9 +6,22 @@ using System.Linq;
 
 namespace BasicUI.Controls
 {
-    public class Repeater<T> : Control, ICollection<T>
+    public class Repeater<T> : ControlBase, ICollection<T>
     {
-        public List<T> Items { get; set; } = new List<T>();
+        private List<T> _items = new List<T>();
+        public List<T> Items
+        {
+            get => _items;
+            set
+            {
+                _items = value;
+
+                if (ScrollToBottom)
+                {
+                    _scrollNextRender = true;
+                }
+            }
+        }
 
         public Func<T, string> Selector { get; set; }
         public Action<T> Renderer { get; set; }

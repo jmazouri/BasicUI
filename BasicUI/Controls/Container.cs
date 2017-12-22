@@ -6,10 +6,10 @@ using System.Numerics;
 
 namespace BasicUI.Controls
 {
-    public class Container : Control, IList<Control>
+    public class Container : ControlBase, IList<IControl>
     {
         public Vector2 Size { get; set; }
-        public ControlCollection<Control> Children { get; private set; }
+        public ControlCollection<IControl> Children { get; private set; }
 
         protected override void InternalRender()
         {
@@ -19,9 +19,9 @@ namespace BasicUI.Controls
             }
         }
 
-        private Control RecursiveControlSearch(string id, IEnumerable<Control> target)
+        private IControl RecursiveControlSearch(string id, IEnumerable<IControl> target)
         {
-            foreach (IEnumerable<Control> c in target.Where(x => x is IEnumerable<Control>))
+            foreach (IEnumerable<IControl> c in target.Where(x => x is IEnumerable<IControl>))
             {
                 var recursiveResult = RecursiveControlSearch(id, c);
                 if (recursiveResult?.Id == id)
@@ -40,7 +40,7 @@ namespace BasicUI.Controls
         /// <param name="id">The id of the control to look for</param>
         /// <returns>The located control</returns>
         /// <remarks>Backed by a dictionary, or a recursive search if not found.</remarks>
-        public T FindControlWithId<T>(string id) where T : Control
+        public T FindControlWithId<T>(string id) where T : IControl
         {
             if (String.IsNullOrWhiteSpace(id)) throw new ArgumentOutOfRangeException("id", id, "Id must not be null or empty");
 
@@ -60,21 +60,21 @@ namespace BasicUI.Controls
 
         public Container(string id = "") : base(id)
         {
-            Children = new ControlCollection<Control>(this);
+            Children = new ControlCollection<IControl>(this);
         }
 
-        public virtual void Add(Control item) => Children.Add(item);
-        public void AddRange(IEnumerable<Control> items) => Children.AddRange(items);
-        public void Insert(int index, Control item) => Children.Insert(index, item);
-        public Control this[int index] { get => Children[index]; set => Children[index] = value; }
+        public virtual void Add(IControl item) => Children.Add(item);
+        public void AddRange(IEnumerable<IControl> items) => Children.AddRange(items);
+        public void Insert(int index, IControl item) => Children.Insert(index, item);
+        public IControl this[int index] { get => Children[index]; set => Children[index] = value; }
         public int Count => Children.Count;
         public bool IsReadOnly => false;
         public void Clear() => Children.Clear();
-        public bool Contains(Control item) => Children.Contains(item);
-        public void CopyTo(Control[] array, int arrayIndex) => Children.CopyTo(array, arrayIndex);
-        public IEnumerator<Control> GetEnumerator() => Children.GetEnumerator();
-        public int IndexOf(Control item) => Children.IndexOf(item);
-        public bool Remove(Control item) => Children.Remove(item);
+        public bool Contains(IControl item) => Children.Contains(item);
+        public void CopyTo(IControl[] array, int arrayIndex) => Children.CopyTo(array, arrayIndex);
+        public IEnumerator<IControl> GetEnumerator() => Children.GetEnumerator();
+        public int IndexOf(IControl item) => Children.IndexOf(item);
+        public bool Remove(IControl item) => Children.Remove(item);
         public void RemoveAt(int index) => Children.RemoveAt(index);
         IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
     }

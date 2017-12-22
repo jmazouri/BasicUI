@@ -6,7 +6,7 @@ using ImageSharp.PixelFormats;
 
 namespace BasicUI.Controls
 {
-    public class ImageBox : Control
+    public class ImageBox : ControlBase
     {
         public Color TintColor { get; set; } = Color.White;
         public Color BorderColor { get; set; } = Color.Transparent;

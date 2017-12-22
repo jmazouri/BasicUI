@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace BasicUI.Controls
 {
-    public class ControlCollection<T> : IList<T> where T : Control
+    public class ControlCollection<T> : IList<T> where T : IControl
     {
         private List<T> _children = new List<T>();
-        private Control _parent;
+        private IControl _parent;
 
-        public ControlCollection(Control parent)
+        public ControlCollection(IControl parent)
         {
             _parent = parent;
         }
@@ -46,22 +46,21 @@ namespace BasicUI.Controls
             {
                 item.BindingContext = _parent.BindingContext;
 
-                var container = item as IEnumerable<Control>;
-                if (container != null)
+                if (item is IEnumerable<IControl> container)
                 {
                     RecursiveApplyBinding(container);
                 }
             }
         }
 
-        private void RecursiveApplyBinding(IEnumerable<Control> target)
+        private void RecursiveApplyBinding(IEnumerable<IControl> target)
         {
-            foreach (IEnumerable<Control> c in target.Where(x => x is IEnumerable<Control>))
+            foreach (IEnumerable<IControl> c in target.Where(x => x is IEnumerable<IControl>))
             {
                 RecursiveApplyBinding(c);
             }
 
-            foreach (Control c in target)
+            foreach (IControl c in target)
             {
                 c.BindingContext = _parent.BindingContext;
             }

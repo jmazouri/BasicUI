@@ -20,6 +20,8 @@ namespace BasicUI
         private int s_fontTexture;
 
         public Container RootContainer { get; private set; } = new Container();
+        public object BindingContext { get => RootContainer.BindingContext; set => RootContainer.BindingContext = value; }
+
         public int Width { get; private set; }
         public int Height { get; private set; }
 
@@ -29,7 +31,9 @@ namespace BasicUI
         public bool ShowToolbar { get; set; } = true;
         public Toolbar Toolbar { get; private set; }
 
-        public static Dictionary<string, Control> ControlIdentifiers = new Dictionary<string, Control>();
+        public HotkeyManager HotkeyManager { get; private set; }
+
+        public static Dictionary<string, IControl> ControlIdentifiers = new Dictionary<string, IControl>();
 
         /// <summary>
         /// Runs after the window has been initialized, IO has been bound, and an OpenGL context has been created
@@ -55,16 +59,14 @@ namespace BasicUI
 
         public static float GlobalTime = 0;
 
-        public Window(int width = 640, int height = 480, string windowTitle = "BasicUI", INotifyPropertyChanged bindingContext = null)
+        public Window(int width = 640, int height = 480, string windowTitle = "BasicUI")
         {
             initialTitle = windowTitle;
             Width = width;
             Height = height;
 
-            RootContainer.BindingContext = bindingContext;
-
             Toolbar = new Toolbar("mainToolbar");
-            Toolbar.BindingContext = bindingContext;
+            Toolbar.BindingContext = RootContainer.BindingContext;
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace BasicUI
         /// <param name="id">The id of the control to look for</param>
         /// <returns>The located control</returns>
         /// <remarks>Backed by a dictionary, or a recursive search if not found.</remarks>
-        public T FindControlWithId<T>(string id) where T : Control
+        public T FindControlWithId<T>(string id) where T : IControl
         {
             return RootContainer.FindControlWithId<T>(id);
         }
@@ -84,7 +86,7 @@ namespace BasicUI
         /// </summary>
         /// <param name="controlId">The ID of the control to return</param>
         /// <returns>The control with the given ID</returns>
-        public Control this[string controlId] => RootContainer.FindControlWithId<Control>(controlId);
+        public IControl this[string controlId] => RootContainer.FindControlWithId<IControl>(controlId);
 
         private unsafe void InitializeWindow()
         {
@@ -93,14 +95,8 @@ namespace BasicUI
 
             _nativeWindow.Visible = true;
 
-            if (FontPath == null)
-            {
-                ImGui.GetIO().FontAtlas.AddDefaultFont();
-            }
-            else
-            {
-                var font = ImGui.GetIO().FontAtlas.AddFontFromFileTTF(FontPath, FontSize);
-            }
+            //new ushort[] { '\u0001', '\uFFFF', 0 }
+            FontHelper.LoadFont(FontHelper.LocateFont(FontPath), FontSize);
 
             WindowIO.SetKeyMappings(_nativeWindow);
 
@@ -110,6 +106,8 @@ namespace BasicUI
             {
                 ThemeLoader.LoadTheme(File.ReadAllText("theme.json"));
             }
+
+            HotkeyManager = new HotkeyManager(_nativeWindow);
 
             Ready?.Invoke(this);
         }
