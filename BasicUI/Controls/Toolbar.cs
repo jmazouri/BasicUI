@@ -14,7 +14,7 @@ namespace BasicUI.Controls
 
             if (ImGui.BeginMainMenuBar())
             {
-                foreach (MenuItem item in Items)
+                foreach (IMenuItem item in Items)
                 {
                     item.Render();
                 }

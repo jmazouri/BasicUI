@@ -19,6 +19,14 @@ namespace BasicUI.Controls
             }
         }
 
+        public override void Update()
+        {
+            foreach (var child in Children.ToList())
+            {
+                child.Update();
+            }
+        }
+
         private IControl RecursiveControlSearch(string id, IEnumerable<IControl> target)
         {
             foreach (IEnumerable<IControl> c in target.Where(x => x is IEnumerable<IControl>))

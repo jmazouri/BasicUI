@@ -169,6 +169,8 @@ namespace BasicUI.Native
 
             WindowIO.UpdateImGuiInput(nativeWindow, io);
 
+            window.RootContainer.Update();
+
             ImGui.NewFrame();
 
             if (window.ShowToolbar)

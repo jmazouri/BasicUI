@@ -59,7 +59,7 @@ namespace BasicUI.FileBrowser
                 w.FindControlWithId<MenuItem>("Sort"),
                 (vm, item) =>
                 {
-                    var opts = item.AsEnumerable();
+                    var opts = item.Cast<MenuItem>();
                     foreach (var opt in opts)
                     {
                         if (opt.Label == vm.Sorting.ToString())

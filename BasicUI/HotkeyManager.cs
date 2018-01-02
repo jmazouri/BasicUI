@@ -14,7 +14,7 @@ namespace BasicUI
         private List<Key> _pressedKeys = new List<Key>();
         private KeyModifiers _pressedModifiers;
 
-        private List<(Key[] keys, KeyModifiers modifiers, Action trigger)> _hotkeyActions = new List<(Key[], KeyModifiers, Action)>();
+        private List<(Key[] keys, KeyModifiers? modifiers, Action trigger)> _hotkeyActions = new List<(Key[], KeyModifiers?, Action)>();
 
         public HotkeyManager(NativeWindow window)
         {
@@ -40,7 +40,7 @@ namespace BasicUI
             };
         }
 
-        public void Register(Action onActivate, KeyModifiers modifiers, params Key[] keys)
+        public void Register(Action onActivate, KeyModifiers? modifiers, params Key[] keys)
         {
             _hotkeyActions.Add((keys, modifiers, onActivate));
         }
@@ -51,7 +51,7 @@ namespace BasicUI
 
             foreach (var (keys, modifiers, trigger) in _hotkeyActions)
             {
-                if (keys.OrderBy(d => d).SequenceEqual(currentPattern) && _pressedModifiers == modifiers)
+                if (keys.OrderBy(d => d).SequenceEqual(currentPattern) && (modifiers == null || _pressedModifiers == modifiers))
                 {
                     trigger.Invoke();
                 }

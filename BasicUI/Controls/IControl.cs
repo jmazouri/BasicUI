@@ -12,6 +12,13 @@ namespace BasicUI.Controls
         string Id { get; }
         object BindingContext { get; set; }
 
+        /// <summary>
+        /// Make ImGui method calls
+        /// </summary>
         void Render();
+        /// <summary>
+        /// Runs before Render. Use to modify GetIO() and such.
+        /// </summary>
+        void Update();
     }
 }

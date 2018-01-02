@@ -29,6 +29,8 @@ namespace BasicUI.Controls
             PostRender?.Invoke(this);
         }
 
+        public virtual void Update() { }
+
         protected abstract void InternalRender();
 
         public ControlBase(string id = "")

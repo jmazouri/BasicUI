@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <Version>0.1.0-pre-12</Version>
+    <Version>0.1.0-pre-22</Version>
     <Authors>Jmazouri</Authors>
     <Company />
     <Product />
@@ -22,6 +22,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="OpenTK.NETCore" Version="1.1.2749.6433" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BasicUI.FileBrowser">
+      <HintPath>..\BasicUI.FileBrowser\bin\Debug\netcoreapp2.0\BasicUI.FileBrowser.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
